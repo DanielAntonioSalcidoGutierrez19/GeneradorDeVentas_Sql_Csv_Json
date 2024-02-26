@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script>
+    var s, sd;
+
+    function g() {
+      var q = document.getElementById("n").value;
+
+      s =
+        "USE pos; <br>" +
+        "DELETE FROM sale_detail;<br>" +
+        "DELETE FROM sale; <br>" +
+        "INSERT INTO sale(id, date, time)VALUES <br>(1," +
+        "'" +
+        rd() +
+        "'" +
+        "," +
+        "'" +
+        rt() +
+        "')" +
+        ",";
+
+      for (let i = 2; i <= q; i++) {
+        s +=
+          "<br>(" +
+          i +
+          ",'" +
+          rd() +
+          "' , '" +
+          rt() +
+          "'),";
+      }
+
+      if (s.endsWith(",")) {
+        s = s.slice(0, -1) + ";";
+      }
+
+      s += `
+      
+      <br> INSERT INTO sale_detail(SaleID, ProductID) VALUES <br>
+      `;
+
+      for (let i = 1; i <= q; i++) {
+        var si = Math.floor(Math.random() * 10) + 1;
+        for (let j = 0; j < si; j++) {
+          s +=
+            "(" + i + "," + (Math.floor(Math.random() * 10) + 1) + "),";
+        }
+      }
+
+      if (s.endsWith(",")) {
+        s = s.slice(0, -1) + ";";
+      }
+
+      document.getElementById("o").innerHTML = s;
+    }
+
+    function gc() {
+      var q = document.getElementById("n").value;
+
+      s =
+        "<br>1," +
+        "" +
+        rd() +
+        "" +
+        "," +
+        "" +
+        rt() +
+        "" +
+        "";
+
+      for (let i = 2; i <= q; i++) {
+        s +=
+          "<br>" +
+          i +
+          "," +
+          rd() +
+          "," +
+          rt() +
+          "";
+      }
+
+      document.getElementById("o").innerHTML = s;
+
+      sd = "";
+
+      for (let i = 1; i <= q; i++) {
+        var si = Math.floor(Math.random() * 10) + 1;
+        for (let j = 0; j < si; j++) {
+          sd +=
+            "" + i + "," + (Math.floor(Math.random() * 10) + 1) + "<br>";
+        }
+      }
+
+      document.getElementById("o2").innerHTML = sd;
+    }
+
+    function gj() {
+      var q = document.getElementById("n").value;
+
+      s = `{<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;"sale": [<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;{<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"id": 
+      `;
+
+      s +=
+        "1," +
+        "<br>" +
+        `&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"date": "` +
+        rd() +
+        `",` +
+        "<br>" +
+        `&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"time": "` +
+        rt() +
+        `"<br>&nbsp;&nbsp;&nbsp;&nbsp;},` +
+        "";
+
+      for (let i = 2; i <= q; i++) {
+        s +=
+          "<br>" +
+          `&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"id": ` +
+          i +
+          ",<br>" +
+          `&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"date": "` +
+          rd() +
+          `",` +
+          "<br>" +
+          `&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"time": "` +
+          rt() +
+          `"<br>&nbsp;&nbsp;&nbsp;&nbsp;},`;
+      }
+
+      if (s.endsWith(",")) {
+        s =
+          s.slice(0, -1) +
+          `<br>
+                  ]<br>
+                  },<br>`;
+      }
+
+      s += `{<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;"sale_detail": [
+        &nbsp;&nbsp;&nbsp;&nbsp;
+          
+      `;
+      for (let i = 1; i <= q; i++) {
+        var si = Math.floor(Math.random() * 10) + 1;
+        for (let j = 0; j < si; j++) {
+          s +=
+            `<br>&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"SaleID": ` +
+            i +
+            ",<br>" +
+            `&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"ProductID": ` +
+            (Math.floor(Math.random() * 10) + 1) +
+            "<br>&nbsp;&nbsp;&nbsp;&nbsp;},";
+        }
+      }
+
+      if (s.endsWith(",")) {
+        s =
+          s.slice(0, -1) +
+          `<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;]<br>
+                  }<br>`;
+      }
+
+      document.getElementById("o").innerHTML = s;
+    }
+
+    function rd() {
+      var y = Math.floor(Math.random() * (2022 - 2000 + 1)) + 2000;
+      var m = Math.floor(Math.random() * 12) + 1;
+      var d = Math.floor(Math.random() * 31) + 1;
+      var h = Math.floor(Math.random() * 24);
+      var mi = Math.floor(Math.random() * 60);
+      var s = Math.floor(Math.random() * 60);
+
+      var rd = new Date(y, m - 1, d, h, mi, s);
+
+      var fd = rd.toISOString().split("T")[0];
+
+      return fd;
+    }
+
+    function rt() {
+      var h = Math.floor(Math.random() * 24);
+      var m = Math.floor(Math.random() * 60);
+      var s = Math.floor(Math.random() * 60);
+
+      var rf =
+        (h < 10 ? "0" + h : h) + ":" + (m < 10 ? "0" + m : m) + ":" + (s < 10 ? "0" + s : s);
+
+      return rf;
+    }
+
+    function saveSQL() {
+      var f = document.createElement("a");
+      var o = s.replace(/<br>/g, "\n").trim();
+      f.setAttribute(
+        "href",
+        "data:text/plain;charset=UTF-8," + encodeURIComponent(o)
+      );
+      f.setAttribute("download", "point_of_sale.sql");
+      f.style.display = "none";
+
+      document.body.appendChild(f);
+
+      f.click();
+
+      document.body.removeChild(f);
+    }
+
+    function saveCSV() {
+      var f = document.createElement("a");
+
+      var p = document.querySelector("p");
+
+      var t1 = p.querySelector("#o");
+
+      var o = s.replace(/<br>/g, "\n").trim();
+      f.setAttribute(
+        "href",
+        "data:text/plain;charset=UTF-8," + encodeURIComponent(o)
+      );
+      f.setAttribute("download", "sales.csv");
+      f.style.display = "none";
+
+      document.body.appendChild(f);
+
+      f.click();
+
+      document.body.removeChild(f);
+
+      var f2 = document.createElement("a");
+
+      var p2 = document.querySelector("p");
+
+      var t2 = p2.querySelector("#o2");
+
+      var o2 = sd.replace(/<br/g, "").trim();
+
+      f2.setAttribute(
+        "href",
+        "data:text/plain;charset=UTF-8," + encodeURIComponent(o2)
+      );
+      f2.setAttribute("download", "sales_details.csv");
+      f2.style.display = "none";
+
+      document.body.appendChild(f2);
+
+      f2.click();
+
+      document.body.removeChild(f2);
+    }
+
+    function saveJSON() {
+      var f = document.createElement("a");
+      var o = s
+        .replace(/<br>/g, "\n")
+        .replace(/nbsp/g, "\t")
+        .replace(/&/g, "")
+        .replace(/;/g, "");
+      f.setAttribute(
+        "href",
+        "data:text/plain;charset=UTF-8," + encodeURIComponent(o)
+      );
+      f.setAttribute("download", "sales-sales_details-Json.sql");
+      f.style.display = "none";
+
+      document.body.appendChild(f);
+
+      f.click();
+
+      document.body.removeChild(f);
+    }
+  </script>
+</head>
+
+<body>
+  <input type="number" id="n" placeholder="Number of sales to generate" value="10" required />
+  <input type="button" value="Generate SQL" onclick="g()" />
+  <br />
+  <input type="button" value="Generate CSV" onclick="gc()" />
+  <br />
+  <input type="button" value="Generate JSON" onclick="gj()" />
+  <br />
+  <input type="button" value="Save SQL" onclick="saveSQL()" />
+  <br />
+  <input type="button" value="Save CSV" onclick="saveCSV()" />
+  <br />
+  <input type="button" value="Save JSON" onclick="saveJSON()" />
+
+  <p id="o"></p>
+
+  <p id="o2"></p>
+</body>
+</html>
